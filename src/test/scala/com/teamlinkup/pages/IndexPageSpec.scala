@@ -5,8 +5,11 @@ import org.scalatest.FlatSpec
 class HomePageSpec extends FlatSpec {
   
   "Index Page" should "Display a heading TeamLinkUp" in {
-      val indexPage = new IndexPage();
-      assert(indexPage.html == <html><body><h1>TeamLinkUp</h1></body></html>)
+      val indexPage = new IndexPage();     
+
+      expect("TeamLinkUp") {
+        (indexPage.html \\ "h1").text
+      }
   }
   
 }
