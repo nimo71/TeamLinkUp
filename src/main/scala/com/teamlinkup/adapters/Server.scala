@@ -19,7 +19,7 @@ object Server {
 		.run({ svr =>
 				unfiltered.util.Browser.open(http.url)
 			}, { svr =>
-				logger.info("shutting down server")
+				logger.info("Shutting down server")
 			})
 	}
 }

@@ -2,4 +2,8 @@
 .classpath
 .project
 target/
+.ensime
+.ensime.bak
+.ensime_lucene/
+bin/
 
