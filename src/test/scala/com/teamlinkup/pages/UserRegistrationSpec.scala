@@ -7,53 +7,66 @@ import com.teamlinkup.users.User
 
 class UserRegistrationSpec extends FlatSpec with ShouldMatchers {
       
-    "Submitting the registration form" should "save a user registration in the user repository" in {
-      
-    	object TestUserRepository extends UserRepository {
-    		var savedUser: User = null
-    		override def save(user: User): Either[String, User] = {
-    			savedUser = user	
-    			Right(user)
+    "Submitting a the registration page" should "show the index page if the submission is valid" in {
+        
+    	object RegistrationFormStub extends RegistrationForm {
+    	    var validateCalled = false
+    		override def validate(): Either[InvalidRegistrationForm, User] = {
+    	        validateCalled = true
+    	        Right(new User("name@domain.com", "password"))
+    		}
+    	}
+    	
+    	object UserRepositoryStub extends UserRepository {
+    		def save(user: User): Either[String, User] = {
+    			Left("")
     		}
     	}
       
-    	val registerPage = new RegisterPage(TestUserRepository)
-    	val testUser = new User("TestUserName", "TestPassword")
-    	val homePage = registerPage.register(testUser)
+    	val registerPage = new RegisterPage(UserRepositoryStub)
+    	registerPage.submit(RegistrationFormStub)
     	
-    	TestUserRepository.savedUser should equal (testUser)
+    	RegistrationFormStub.validateCalled should be (true)
     }
     
-    "Submitting the registration form" should "show the index page if the user is saved successfully" in {
+    "Submitting a valid registration form" should "show the index page" in {
     	
-    	object SuccessfulUserRepository extends UserRepository {
-    		override def save(user: User): Either[String, User] = {
+    	object ValidRegistrationFormStub extends RegistrationForm {
+    		override def validate(): Either[InvalidRegistrationForm, User] = {
+    	        Right(new User("name@domain.com", "password"))
+    		}
+    	}
+    	
+    	object SuccessfulUserRepositoryStub extends UserRepository {
+    		def save(user: User): Either[String, User] = {
     			Right(user)
     		}
     	}
     	
-    	val registerPage = new RegisterPage(SuccessfulUserRepository)
-    	val testUser = new User("TestUserName", "TestPassword")
-    	val indexPage = registerPage.register(testUser)
+    	val registerPage = new RegisterPage(SuccessfulUserRepositoryStub)
+    	val indexPage = registerPage.submit(ValidRegistrationFormStub)
     	
     	indexPage should equal (new IndexPage(Some("You have sucessufully registered, please log in with your username and password")))
     }
 
-    "Submitting the registration form" should "show the registration page if there is a problem saving the user" in {
+    "Submitting an invalid registration form" should "show the registration page" in {
     	
     	val errorMessage = "There was an error saving the user" 
       
-    	object UnsuccessfulUserRepository extends UserRepository {
-    		override def save(user: User): Either[String, User] = {
-    			Left(errorMessage)
+    	object SuccessfulUserRepositoryStub extends UserRepository {
+    		def save(user: User): Either[String, User] = {
+    			Right(user)
     		}
     	}
     	
-    	val registerPage = new RegisterPage(UnsuccessfulUserRepository)
-    	val testUser = new User("TestUserName", "TestPassword")
-    	val newRegisterPage = registerPage.register(testUser)
+    	val registerPage = new RegisterPage(SuccessfulUserRepositoryStub)
+    	val newRegisterPage = registerPage.submit(new InvalidRegistrationForm("", "", "", "", new FormErrors()))
     	
-    	newRegisterPage should equal (new RegisterPage(UnsuccessfulUserRepository, Some(errorMessage)))
+    	newRegisterPage should equal (new RegisterPage(SuccessfulUserRepositoryStub))
     }
+
+//    "Submitting an invalid email" should "show the register page with a validation message on the email field" in {
+//    	fail
+//    }
     
 }

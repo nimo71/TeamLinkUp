@@ -11,8 +11,6 @@ class TeamLinkUpPlan extends Plan {
 		case req @ Path("/") => IndexPlan.intent(req)
 		case req @ Path("/index") => IndexPlan.intent(req)
 		case req @ Path("/register") => RegisterPlan.intent(req)
-//		case req @ Path("/register") => RegisterPlan.intent(req)
-//		case req @ Path("/login") => LoginPlan.intent(req)
 //		case req @ Path("/profile") => AuthorisationPlan.intent.onPass(ProfilePlan.intent)(req)
 	}
 }

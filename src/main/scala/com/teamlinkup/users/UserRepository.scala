@@ -11,4 +11,5 @@ object UserRepository extends UserRepository {
 trait UserRepository {
 	
 	def save(user: User): Either[String, User]
+	
 }
