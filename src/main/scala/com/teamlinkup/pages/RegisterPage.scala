@@ -10,13 +10,13 @@ class RegisterPage(
 ) 
 	extends Page 
 {
-	def this(userRepository: UserRepository) = this(new PopulatedRegistrationForm(), userRepository)
+	def this(userRepository: UserRepository) = this(new RegistrationForm(), userRepository)
   
     def html = new HtmlFile("src/main/resources/www/html/register.html").contentNodes
 
     def submit(form: RegistrationForm): Page = {
-	    form.validate() match {
-  	  	    case Left(formWithErrors) => new RegisterPage(formWithErrors, userRepository) 
+	    RegistrationForm.validate(form) match {
+  	  	    case Left(invalidForm) => new RegisterPage(invalidForm, userRepository) 
   	  	    case Right(user) => register(user)
   	  	}
 	} 
@@ -28,7 +28,7 @@ class RegisterPage(
     	}
     }
 	
-	override def equals(that: Any) = {
+	override def equals(that: Any): Boolean = {
 		that match {
 	    	case registerPage: RegisterPage => registerPage.registrationForm == registrationForm
 	    	case _ => false

@@ -10,59 +10,56 @@ object RegistrationForm {
     		params.get(name).flatMap { _.headOption } getOrElse("")
     	}
 		
-    	new PopulatedRegistrationForm(
+    	new RegistrationForm(
     	    getParamValue("email"), 
     	    getParamValue("confirmEmail"), 
       	  	getParamValue("password"), 
       	  	getParamValue("confirmPassword"))
 	}
-}
-
-trait RegistrationForm {
-	def validate(): Either[InvalidRegistrationForm, User]
-}
-
-class PopulatedRegistrationForm(
-    val email: String, 
-    val confirmEmail: String, 
-    val password: String, 
-    val confirmPassword: String) extends RegistrationForm 
-{
-	def this() = this("", "", "", "")
 	
-	override def validate(): Either[InvalidRegistrationForm, User] = {
-		null
-	} 
-	
-	override def equals(that: Any) = {
-		that match {
-	    	case form: PopulatedRegistrationForm => 
-	    	  	form.email == email && 
-	    	  	form.confirmEmail == confirmEmail && 
-	    	  	form.password == password &&
-	    	  	form.confirmPassword == confirmPassword
-	    	  	
-	    	case _ => false
-		}
+	def validate(form: RegistrationForm): Either[RegistrationForm, User] = {
+	    val validatedForm = form.validateEmail().validatePassword() 
+	    if (validatedForm.hasErrors) 
+		    Left(validatedForm)
+	    else {
+	    	Email.fromString(form.email).fold( 
+	    	    l => { Left(validatedForm) }, 
+	    	    r => { Right(new User(r, validatedForm.password)) } )
+	    }
 	}
 }
 
-class InvalidRegistrationForm(
-    override val email: String, 
-    override val confirmEmail: String, 
-    override val password: String, 
-    override val confirmPassword: String, 
-    val errors: FormErrors
-) 
-   	extends PopulatedRegistrationForm(email, confirmEmail, password, confirmPassword) 
+class RegistrationForm(
+	val email: String, 
+    val confirmEmail: String, 
+    val password: String, 
+    val confirmPassword: String, 
+    val errors: FormErrors)
 {
-    override def validate(): Either[InvalidRegistrationForm, User] = {
-        Left(this)
-    }
-    
-    override def equals(that: Any) = {
+	private val emailField = new EmailFormField("email", email)
+	
+	def this(email: String, confirmEmail: String, password: String, confirmPassword: String) = 
+	  	this(email, confirmEmail, password, confirmPassword, FormErrors.empty)
+	  	
+	def this() = this("", "", "", "", FormErrors.empty)
+
+	def validateEmail(): RegistrationForm = {
+		emailField.validate() match {
+		    case Right(email) => this
+		    case Left(error) => new RegistrationForm(
+		        email, "", password, "", errors :+ error )
+		}
+	}
+	
+	def validatePassword(): RegistrationForm = {
+	    this
+	}
+	
+	def hasErrors(): Boolean = errors.length > 0
+	
+	override def equals(that: Any) = {
 		that match {
-	    	case form: InvalidRegistrationForm => 
+	    	case form: RegistrationForm => 
 	    	  	form.email == email && 
 	    	  	form.confirmEmail == confirmEmail && 
 	    	  	form.password == password &&
