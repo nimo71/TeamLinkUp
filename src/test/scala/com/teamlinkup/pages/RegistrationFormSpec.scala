@@ -37,5 +37,15 @@ class RegistrationFormSpec extends FlatSpec with ShouldMatchers {
     			Left(new RegistrationForm(
     					"invalidemail", "", "password", "", FormErrors.empty :+ new FormError("email", "Invalid email address") )))
     }
+
+    "Submitting a RegistrationForm where email and confirmation don't match" should 
+    	"result in an RegistrationForm with confirm email FormError" in 
+    {
+    	val invalidForm = new RegistrationForm("valid@email.com", "not confirmed", "password", "password")
+    	RegistrationForm.validate(invalidForm) should be (
+    			Left(new RegistrationForm(
+    					"valid@email.com", "", "password", "", FormErrors.empty :+ new FormError("confirmEmail", "Please confirm email") )))
+    }
+    
     
 }

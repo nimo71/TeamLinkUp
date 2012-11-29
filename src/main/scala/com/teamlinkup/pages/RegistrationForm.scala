@@ -44,8 +44,18 @@ class RegistrationForm(
 	def this() = this("", "", "", "", FormErrors.empty)
 
 	def validateEmail(): RegistrationForm = {
+	  
+		def validateEmailConfirmation(form: RegistrationForm) = 
+			if (confirmEmail.trim == email.trim) {
+			    form
+			} 
+			else {
+				val error = new FormError("confirmEmail", "Please confirm email")
+				new RegistrationForm(form.email, "", form.password, "", form.errors :+ error)
+			}
+	  
 		emailField.validate() match {
-		    case Right(email) => this
+		    case Right(email) => validateEmailConfirmation(this) 
 		    case Left(error) => new RegistrationForm(
 		        email, "", password, "", errors :+ error )
 		}
