@@ -8,7 +8,7 @@ class HomePageSpec extends FlatSpec {
         val indexPage = new IndexPage()     
 
         expect("TeamLinkUp") {
-            (indexPage.html \\ "h1").text
+            (indexPage.content.nodes \\ "h1").text
         }
     }
   
@@ -16,7 +16,7 @@ class HomePageSpec extends FlatSpec {
     	val indexPage = new IndexPage()
     	
     	expect("Register") {
-    		(indexPage.html \\ "a").text
+    		(indexPage.content.nodes \\ "a").text
     	}
     }
 

@@ -1,27 +1,29 @@
 package com.teamlinkup.pages
 
-import com.teamlinkup.html.HtmlFile
 import com.teamlinkup.users.UserRepository
 import com.teamlinkup.users.User
+import com.teamlinkup.pages.form.RegistrationForm
+import com.teamlinkup.html.Html
 
 class RegisterPage(
     val registrationForm: RegistrationForm, 
-    val userRepository: UserRepository
+    val userRepository: UserRepository, 
+    val html: Html
 ) 
-	extends Page 
+    extends Page
 {
-	def this(userRepository: UserRepository) = this(new RegistrationForm(), userRepository)
+	def this(userRepository: UserRepository, html: Html) = this(new RegistrationForm(), userRepository, html)
   
-    def html = new HtmlFile("src/main/resources/www/html/register.html").contentNodes
-
+	override def content: Html = html
+	
     def submit(form: RegistrationForm): Page = {
 	    RegistrationForm.validate(form) match {
-  	  	    case Left(invalidForm) => new RegisterPage(invalidForm, userRepository) 
+  	  	    case Left(invalidForm) => new RegisterPage(invalidForm, userRepository, html) 
   	  	    case Right(user) => register(user)
   	  	}
-	} 
+	}
       
-    private def register(user: User): IndexPage = {
+    private def register(user: User): Page = {
     	userRepository.save(user) match {
     		case Right(_) => new IndexPage(Some("You have sucessufully registered, please log in with your username and password"))
     		case Left(errorMessage) => new IndexPage(Some(errorMessage))

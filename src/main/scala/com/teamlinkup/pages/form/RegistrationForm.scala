@@ -1,6 +1,7 @@
-package com.teamlinkup.pages
+package com.teamlinkup.pages.form
 
 import com.teamlinkup.users.User
+import com.teamlinkup.users.Email
 
 object RegistrationForm {
   

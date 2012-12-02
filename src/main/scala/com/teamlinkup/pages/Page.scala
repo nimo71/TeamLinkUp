@@ -1,9 +1,9 @@
 package com.teamlinkup.pages
 
-import scala.xml.NodeSeq
+import com.teamlinkup.html.Html
 
 trait Page {
 
-	def html: NodeSeq
+	def content: Html
 	
 }

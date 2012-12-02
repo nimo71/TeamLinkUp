@@ -1,6 +1,4 @@
-package com.teamlinkup.pages
-
-import scala.util.matching.Regex
+package com.teamlinkup.users
 import scala.util.matching._
 
 object Email {

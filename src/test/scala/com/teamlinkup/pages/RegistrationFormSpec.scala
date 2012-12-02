@@ -4,6 +4,10 @@ import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 import com.teamlinkup.users.UserRepository
 import com.teamlinkup.users.User
+import com.teamlinkup.pages.form.RegistrationForm
+import com.teamlinkup.pages.form.FormErrors
+import com.teamlinkup.pages.form.FormError
+import com.teamlinkup.users.Email
 
 class RegistrationFormSpec extends FlatSpec with ShouldMatchers {
   

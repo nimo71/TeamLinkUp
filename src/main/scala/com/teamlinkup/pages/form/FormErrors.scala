@@ -1,4 +1,4 @@
-package com.teamlinkup.pages
+package com.teamlinkup.pages.form
 
 object FormErrors {
     val empty = new FormErrors(Nil)

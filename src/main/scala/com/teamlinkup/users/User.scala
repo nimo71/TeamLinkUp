@@ -1,6 +1,5 @@
 package com.teamlinkup.users
 
-import com.teamlinkup.pages.Email
 
 class User(val email: Email, val password: String) {
   

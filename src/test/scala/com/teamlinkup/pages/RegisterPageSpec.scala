@@ -4,21 +4,22 @@ import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 import scala.xml.NodeSeq
 import com.teamlinkup.users.UserRepository
+import com.teamlinkup.adapters.HtmlFile
 
 class RegisterPageSpec extends FlatSpec with ShouldMatchers {
   
-	def registerPage = new RegisterPage(null)
+	def registerPage = new RegisterPage(null, new HtmlFile("src/main/resources/www/html/register.html"))
   
     "Register Page" should "Display a heading TeamLinkUp" in {
              
 		expect("TeamLinkUp") {
-            (registerPage.html \\ "h1").text
+            (registerPage.html.nodes \\ "h1").text
         }
     }
   
     "Register Page" should "Display a 'Home' link" in {
     	expect("Home") {
-    		(registerPage.html \\ "a").text
+    		(registerPage.html.nodes \\ "a").text
     	}
     }
     
@@ -31,7 +32,7 @@ class RegisterPageSpec extends FlatSpec with ShouldMatchers {
     		inputField should not be None
     	}
     	
-    	val registrationForm = registerPage.html \\ "form" 
+    	val registrationForm = registerPage.html.nodes \\ "form" 
     	
     	(registrationForm \ "@name").text should equal ("registrationForm")
     	(registrationForm \ "@method").text should equal ("post")

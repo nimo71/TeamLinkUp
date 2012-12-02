@@ -2,6 +2,9 @@ package com.teamlinkup.pages
 
 import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
+import com.teamlinkup.pages.form.FormError
+import com.teamlinkup.pages.form.EmailFormField
+import com.teamlinkup.users.Email
 
 class EmailFormFieldSpec extends FlatSpec with ShouldMatchers {
   

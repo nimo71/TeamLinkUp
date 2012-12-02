@@ -1,4 +1,6 @@
-package com.teamlinkup.pages
+package com.teamlinkup.pages.form
+
+import com.teamlinkup.users.Email
 
 class EmailFormField(val name: String, val value: String) {
 

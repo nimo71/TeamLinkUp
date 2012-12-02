@@ -8,7 +8,7 @@ import com.teamlinkup.pages.IndexPage
 object IndexPlan extends unfiltered.filter.Plan {
 
 	def intent = { 
-		case _ => Ok ~> Html(new IndexPage().html)
+		case _ => Ok ~> Html(new IndexPage().content.nodes)
 	}
 
 }

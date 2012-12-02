@@ -1,6 +1,7 @@
 package com.teamlinkup.html
 
 import org.scalatest.FlatSpec
+import com.teamlinkup.adapters.HtmlFile
 
 class HtmlFileSpec extends FlatSpec {
   

@@ -1,4 +1,7 @@
-package com.teamlinkup.pages
+package com.teamlinkup.pages.form
+
+import com.teamlinkup.users.Password
+
 
 class PasswordFormField(val name: String, val value: String) {
 

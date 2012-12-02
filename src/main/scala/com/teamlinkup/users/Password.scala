@@ -1,4 +1,4 @@
-package com.teamlinkup.pages
+package com.teamlinkup.users
 
 object Password {
   
