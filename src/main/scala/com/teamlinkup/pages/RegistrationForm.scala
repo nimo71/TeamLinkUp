@@ -20,12 +20,11 @@ object RegistrationForm {
 	def validate(form: RegistrationForm): Either[RegistrationForm, User] = {
 	    val validatedForm = form.validateEmail().validatePassword() 
 	    if (validatedForm.hasErrors) 
-		    Left(validatedForm)
-	    else {
+		    Left(new RegistrationForm(validatedForm.email, "", validatedForm.password, "", validatedForm.errors))
+	    else 
 	    	Email.fromString(form.email).fold( 
 	    	    l => { Left(validatedForm) }, 
 	    	    r => { Right(new User(r, validatedForm.password)) } )
-	    }
 	}
 }
 
@@ -37,6 +36,7 @@ class RegistrationForm(
     val errors: FormErrors)
 {
 	private val emailField = new EmailFormField("email", email)
+	private val passwordField = new PasswordFormField("password", password)
 	
 	def this(email: String, confirmEmail: String, password: String, confirmPassword: String) = 
 	  	this(email, confirmEmail, password, confirmPassword, FormErrors.empty)
@@ -45,24 +45,39 @@ class RegistrationForm(
 
 	def validateEmail(): RegistrationForm = {
 	  
-		def validateEmailConfirmation(form: RegistrationForm) = 
+		def validateEmailConfirmation(form: RegistrationForm) = {
 			if (confirmEmail.trim == email.trim) {
 			    form
 			} 
 			else {
 				val error = new FormError("confirmEmail", "Please confirm email")
-				new RegistrationForm(form.email, "", form.password, "", form.errors :+ error)
+				new RegistrationForm(form.email, form.confirmEmail, form.password, form.confirmPassword, form.errors :+ error)
 			}
+		}
 	  
 		emailField.validate() match {
 		    case Right(email) => validateEmailConfirmation(this) 
 		    case Left(error) => new RegistrationForm(
-		        email, "", password, "", errors :+ error )
+		        email, confirmEmail, password, confirmPassword, errors :+ error )
 		}
 	}
 	
 	def validatePassword(): RegistrationForm = {
-	    this
+		
+		def validatePasswordConfirmation(form: RegistrationForm) = { 
+			if (confirmPassword.trim == password.trim) {
+				form
+			}
+			else {
+				val error = new FormError("confirmPassword", "Please confirm password")
+				new RegistrationForm(form.email, form.confirmEmail, form.password, form.confirmPassword, form.errors :+ error)
+			}
+		}
+	  
+	    passwordField.validate() match {
+	      	case Right(password) => validatePasswordConfirmation(this)
+	      	case Left(error) => new RegistrationForm(email, confirmEmail, password, confirmPassword, errors :+ error )
+	    }
 	}
 	
 	def hasErrors(): Boolean = errors.length > 0

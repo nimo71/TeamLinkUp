@@ -41,7 +41,10 @@ class UserRegistrationSpec extends FlatSpec with ShouldMatchers {
     	val registerPage = new RegisterPage(userRepository.successful)
     	val newRegisterPage = registerPage.submit(new RegistrationForm())
     	
-    	val invalidRegistrationForm = new RegistrationForm("", "", "", "", FormErrors.empty :+ new FormError("email", "Invalid email address"))
+    	val invalidRegistrationForm = new RegistrationForm("", "", "", "", 
+    	    FormErrors.empty :+ 
+    	    	new FormError("email", "Invalid email address") :+
+    	    	new FormError("password", "Invalid password"))
     	
     	newRegisterPage should equal (new RegisterPage(invalidRegistrationForm, userRepository.successful))
     }
@@ -49,13 +52,14 @@ class UserRegistrationSpec extends FlatSpec with ShouldMatchers {
     "Submitting an empty email" should 
     	"show the register page with a error message on the email field" in 
     {
-    	val errorMessage = "Invalid email address"
     	val registerPage = new RegisterPage(userRepository.successful)
     	val newRegisterPage = registerPage.submit(new RegistrationForm("", "", "password", "password"))
     	
-    	newRegisterPage should equal (
+    	newRegisterPage should be (
     	    new RegisterPage(
-    	    	new RegistrationForm("", "", "password", "", FormErrors.empty :+ new FormError("email", "Invalid email address")), 
+    	    	new RegistrationForm("", "", "password", "", 
+    	    	    FormErrors.empty :+ 
+    	    	    	new FormError("email", "Invalid email address")), 
     	        userRepository.successful ))
     }
     
