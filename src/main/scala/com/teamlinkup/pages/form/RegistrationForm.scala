@@ -37,7 +37,9 @@ class RegistrationForm(
     val errors: FormErrors)
 {
 	private val emailField = new EmailFormField("email", email)
+	private val emailConfirmationField = new ConfirmationFormField("confirmEmail", confirmEmail)
 	private val passwordField = new PasswordFormField("password", password)
+	private val passwordConfirmationField = new ConfirmationFormField("confirmPassword", confirmPassword)
 	
 	def this(email: String, confirmEmail: String, password: String, confirmPassword: String) = 
 	  	this(email, confirmEmail, password, confirmPassword, FormErrors.empty)
