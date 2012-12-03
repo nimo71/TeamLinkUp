@@ -1,7 +1,7 @@
 package com.teamlinkup.pages.form
 
-trait FormField {
+trait FormField[T] {
 
-	def validate(): Either[FormError, String]
+	def validate(): Either[FormError, T]
 
 }
