@@ -37,9 +37,9 @@ class RegistrationForm(
     val errors: FormErrors)
 {
 	private val emailField = new EmailFormField("email", email)
-	private val emailConfirmationField = new ConfirmationFormField("confirmEmail", confirmEmail)
+	private val emailConfirmationField = new ConfirmationFormField("confirmEmail", confirmEmail, email)
 	private val passwordField = new PasswordFormField("password", password)
-	private val passwordConfirmationField = new ConfirmationFormField("confirmPassword", confirmPassword)
+	private val passwordConfirmationField = new ConfirmationFormField("confirmPassword", confirmPassword, password)
 	
 	def this(email: String, confirmEmail: String, password: String, confirmPassword: String) = 
 	  	this(email, confirmEmail, password, confirmPassword, FormErrors.empty)
@@ -57,12 +57,13 @@ class RegistrationForm(
 				new RegistrationForm(form.email, form.confirmEmail, form.password, form.confirmPassword, form.errors :+ error)
 			}
 		}
-	  
+		
 		emailField.validate() match {
 		    case Right(email) => validateEmailConfirmation(this) 
 		    case Left(error) => new RegistrationForm(
 		        email, confirmEmail, password, confirmPassword, errors :+ error )
 		}
+		
 	}
 	
 	def validatePassword(): RegistrationForm = {

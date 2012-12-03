@@ -1,8 +1,8 @@
 package com.teamlinkup.pages.form
 
-class ConfirmationFormField(val name: String, val value: String) {
+class ConfirmationFormField(val name: String, val value: String, val confirmValue: String) extends FormField {
 
-	def validate(confirmValue: String): Either[FormError, String] = {
+	override def validate(): Either[FormError, String] = {
 		if (value != confirmValue) 
 			Left(new FormError(name, "Values do not match"))
 		else 

@@ -1,12 +1,8 @@
-package com.teamlinkup.pages
+package com.teamlinkup.pages.form
 
 import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
-import com.teamlinkup.users.UserRepository
 import com.teamlinkup.users.User
-import com.teamlinkup.pages.form.RegistrationForm
-import com.teamlinkup.pages.form.FormErrors
-import com.teamlinkup.pages.form.FormError
 import com.teamlinkup.users.Email
 
 class RegistrationFormSpec extends FlatSpec with ShouldMatchers {
@@ -72,5 +68,8 @@ class RegistrationFormSpec extends FlatSpec with ShouldMatchers {
     			Left(new RegistrationForm(
     					validEmail, "", validPassword, "", FormErrors.empty :+ new FormError("confirmPassword", "Please confirm password") )))
     }
+    
+//    "Move confirmation validation into confirmation form field" should "" in { fail }
+//    "Consider moving form values into form fields" should "" in { fail }
     
 }

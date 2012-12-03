@@ -1,10 +1,8 @@
-package com.teamlinkup.pages
+package com.teamlinkup.pages.form
 
 import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 import com.teamlinkup.users.Password
-import com.teamlinkup.pages.form.PasswordFormField
-import com.teamlinkup.pages.form.FormError
 
 class PasswordFormFieldSpec extends FlatSpec with ShouldMatchers {
   
