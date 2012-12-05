@@ -69,7 +69,6 @@ class RegistrationFormSpec extends FlatSpec with ShouldMatchers {
     					validEmail, "", validPassword, "", FormErrors.empty :+ new FormError("confirmPassword", "Please confirm password") )))
     }
     
-//    "Move confirmation validation into confirmation form field" should "" in { fail }
 //    "Consider moving form values into form fields" should "" in { fail }
     
 }
