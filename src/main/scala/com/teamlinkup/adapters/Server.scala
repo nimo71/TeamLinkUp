@@ -16,9 +16,11 @@ object Server {
 			ctx.resources(getClass().getResource("/www/css"))
 		}
 		.filter(new TeamLinkUpPlan())
-		.run({ svr =>
-				unfiltered.util.Browser.open(http.url)
-			}, { svr =>
+		.run(
+//{ svr =>
+//				unfiltered.util.Browser.open(http.url)
+//			}, 
+			{ svr =>
 				logger.info("Shutting down server")
 			})
 	}
